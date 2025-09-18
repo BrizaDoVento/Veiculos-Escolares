@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VehicleRequest;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use App\Models\AccessibilityType;
 
 class VehicleController extends Controller
 {
@@ -16,14 +17,8 @@ class VehicleController extends Controller
 
     public function create()
     {
-        // se quiser enviar opções de accessibility:
-        $accessibilityOptions = [
-            'wheelchair_ramp' => 'Rampa para cadeiras de rodas',
-            'lift' => 'Elevador / Lift',
-            'low_floor' => 'Piso baixo',
-            'none' => 'Nenhuma',
-        ];
-        return view('vehicles.create', compact('accessibilityOptions'));
+        $types = AccessibilityType::all();
+        return view('vehicles.create', compact('types'));
     }
 
     public function store(VehicleRequest $request)
@@ -43,15 +38,10 @@ class VehicleController extends Controller
     }
 
     public function edit(Vehicle $vehicle)
-    {
-        $accessibilityOptions = [
-            'wheelchair_ramp' => 'Rampa para cadeiras de rodas',
-            'lift' => 'Elevador / Lift',
-            'low_floor' => 'Piso baixo',
-            'none' => 'Nenhuma',
-        ];
-        return view('vehicles.edit', compact('vehicle', 'accessibilityOptions'));
-    }
+{
+    $types = AccessibilityType::all();
+    return view('vehicles.edit', compact('vehicle', 'types'));
+}
 
     public function update(VehicleRequest $request, Vehicle $vehicle)
     {

@@ -23,4 +23,9 @@ class Vehicle extends Model
         'updated_at',
         'deleted_at',
     ];
+    
+    public function accessibilityType()
+    {
+        return $this->belongsTo(AccessibilityType::class);
+    }
 }

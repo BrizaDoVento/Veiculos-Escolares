@@ -19,14 +19,16 @@
 </div>
 
 <div class="form-group">
-    <label for="accessibility_type">Tipo de acessibilidade (opcional)</label>
-    <select name="accessibility_type" id="accessibility_type" class="form-control @error('accessibility_type') is-invalid @enderror">
-        <option value="none" {{ old('accessibility_type', $vehicle->accessibility_type ?? 'none') === 'none' ? 'selected' : '' }}>Nenhuma</option>
-        <option value="wheelchair_ramp" {{ old('accessibility_type', $vehicle->accessibility_type ?? '') === 'wheelchair_ramp' ? 'selected' : '' }}>Rampa para cadeiras de rodas</option>
-        <option value="lift" {{ old('accessibility_type', $vehicle->accessibility_type ?? '') === 'lift' ? 'selected' : '' }}>Elevador / Lift</option>
-        <option value="low_floor" {{ old('accessibility_type', $vehicle->accessibility_type ?? '') === 'low_floor' ? 'selected' : '' }}>Piso baixo</option>
+    <label for="accessibility_type_id">Tipo de acessibilidade</label>
+    <select name="accessibility_type_id" id="accessibility_type_id" class="form-control">
+        <option value="">Nenhuma</option>
+        @foreach($types as $type)
+            <option value="{{ $type->id }}"
+                {{ old('accessibility_type_id', $vehicle->accessibility_type_id ?? '') == $type->id ? 'selected' : '' }}>
+                {{ $type->name }}
+            </option>
+        @endforeach
     </select>
-    @error('accessibility_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
 <button type="submit" class="btn btn-primary">{{ $btnText ?? 'Salvar' }}</button>

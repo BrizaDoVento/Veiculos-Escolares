@@ -13,9 +13,7 @@ class CreateVehiclesTable extends Migration
             $table->string('model'); // modelo do veículo
             $table->string('plate'); // placa
             $table->date('acquisition_date'); // data de aquisição
-            $table->string('accessibility_type')->nullable(); // tipo de acessibilidade (se houver)
             $table->timestamps();
-            $table->softDeletes(); // opcional: para exclusão suave
         });
     }
 

@@ -25,7 +25,7 @@ class VehicleRequest extends FormRequest
                 // opcional: validar formato da placa com regex (Brasil Mercosul/antiga)
             ],
             'acquisition_date' => 'required|date',
-            'accessibility_type' => 'nullable|string|max:255',
+            'accessibility_type_id' => 'nullable|exists:accessibility_types,id',
         ];
     }
 
