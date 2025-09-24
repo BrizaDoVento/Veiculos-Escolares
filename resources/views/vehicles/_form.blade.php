@@ -19,17 +19,21 @@
 </div>
 
 <div class="form-group">
-    <label for="accessibility_type_id">Tipo de acessibilidade</label>
-    <select name="accessibility_type_id" id="accessibility_type_id" class="form-control">
-        <option value="">Nenhuma</option>
-        @foreach($types as $type)
-            <option value="{{ $type->id }}"
-                {{ old('accessibility_type_id', $vehicle->accessibility_type_id ?? '') == $type->id ? 'selected' : '' }}>
-                {{ $type->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+    <label>Tipos de Acessibilidade:</label><br>
+    @php
+        $selected = old('accessibility_types', isset($vehicle) ? $vehicle->accessibilityTypes->pluck('id')->toArray() : []);
+    @endphp
 
-<button type="submit" class="btn btn-primary">{{ $btnText ?? 'Salvar' }}</button>
-<a href="{{ route('vehicles.index') }}" class="btn btn-secondary">Cancelar</a>
+    @foreach($types as $type)
+        <label>
+            <input type="checkbox" 
+                   name="accessibility_types[]" 
+                   value="{{ $type->id }}"
+                   {{ in_array($type->id, $selected) ? 'checked' : '' }}>
+            {{ $type->name }}
+        </label><br>
+    @endforeach
+</div>
+        
+        <button type="submit" class="btn btn-primary">{{ $btnText ?? 'Salvar' }}</button>
+        <a href="{{ route('vehicles.index') }}" class="btn btn-secondary">Cancelar</a>

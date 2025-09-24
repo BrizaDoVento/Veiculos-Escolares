@@ -24,8 +24,8 @@ class Vehicle extends Model
         'deleted_at',
     ];
     
-    public function accessibilityType()
+    public function accessibilityTypes()
     {
-        return $this->belongsTo(AccessibilityType::class);
+        return $this->belongsToMany(AccessibilityType::class);
     }
 }

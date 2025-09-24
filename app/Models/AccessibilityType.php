@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class AccessibilityType extends Model
 {
     use HasFactory;
-protected $table = 'accessibility_types';
+
     protected $fillable = ['name'];
 
     public function vehicles()
     {
-        return $this->hasMany(Vehicle::class);
+        return $this->belongsToMany(Vehicle::class, 'accessibility_type_vehicle');
     }
-    
 }

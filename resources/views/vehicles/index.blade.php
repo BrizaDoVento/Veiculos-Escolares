@@ -26,7 +26,13 @@
             <td>{{ $vehicle->model }}</td>
             <td>{{ $vehicle->plate }}</td>
             <td>{{ $vehicle->acquisition_date->format('d/m/Y') }}</td>
-            <td>{{ $vehicle->accessibilityType->name ?? '-' }}</td>
+            <td>
+                @forelse($vehicle->accessibilityTypes as $type)
+                <span class="badge badge-info">{{ $type->name }}</span>
+                @empty
+                Nenhuma
+                @endforelse
+            </td>
             <td>
                 <a href="{{ route('vehicles.show', $vehicle) }}" class="btn btn-sm btn-info">Ver</a>
                 <a href="{{ route('vehicles.edit', $vehicle) }}" class="btn btn-sm btn-warning">Editar</a>
