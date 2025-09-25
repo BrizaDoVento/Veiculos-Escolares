@@ -22,7 +22,7 @@ class VehicleController extends Controller
     public function create()
     {
         $types = AccessibilityType::all();
-        $vehicle = null; // Garante que a variável exista na view
+        $vehicle = null; // agora garante que a variável exista na view
         return view('vehicles.create', compact('types', 'vehicle'));
     }
 
