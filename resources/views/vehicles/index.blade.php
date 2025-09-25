@@ -1,56 +1,49 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de Veículos')
-
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Veículos</h1>
-    <a href="{{ route('vehicles.create') }}" class="btn btn-primary">Cadastrar Veículo</a>
-</div>
+<div class="container">
+    <h1 class="mb-4">Veículos Escolares</h1>
 
-<table class="table table-bordered table-striped">
+    <a href="{{ route('vehicles.create') }}" class="btn btn-primary mb-3">Cadastrar Novo Veículo</a>
+
+    <table class="table">
     <thead>
         <tr>
-            <th>#</th>
             <th>Modelo</th>
             <th>Placa</th>
-            <th>Data de aquisição</th>
-            <th>Acessibilidade</th>
+            <th>Data de Aquisição</th>
+            <th>Acessibilidades</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-    @forelse($vehicles as $vehicle)
-        <tr>
-            <td>{{ $vehicle->id }}</td>
-            <td>{{ $vehicle->model }}</td>
-            <td>{{ $vehicle->plate }}</td>
-            <td>{{ $vehicle->acquisition_date->format('d/m/Y') }}</td>
-            <td>
-                @forelse($vehicle->accessibilityTypes as $type)
-                <span class="badge badge-info">{{ $type->name }}</span>
-                @empty
-                Nenhuma
-                @endforelse
-            </td>
-            <td>
-                <a href="{{ route('vehicles.show', $vehicle) }}" class="btn btn-sm btn-info">Ver</a>
-                <a href="{{ route('vehicles.edit', $vehicle) }}" class="btn btn-sm btn-warning">Editar</a>
+        @foreach($vehicles as $vehicle)
+            <tr>
+                <td>{{ $vehicle->modelo }}</td>
+                <td>{{ $vehicle->placa }}</td>
+                <td>{{ \Carbon\Carbon::parse($vehicle->data_aquisicao)->format('d/m/Y') }}</td>
+                <td>
+                    {{ $vehicle->accessibilityTypes->pluck('name')->implode(', ') }}
+                </td>
+                <td>
+                    <a href="{{ route('vehicles.edit', $vehicle) }}" class="btn btn-warning btn-sm">Editar</a>
 
-                <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirma exclusão deste veículo?');">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger">Excluir</button>
-                </form>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="6">Nenhum veículo cadastrado.</td>
-        </tr>
-    @endforelse
+                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Tem certeza que deseja excluir?')">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
     </tbody>
 </table>
 
-{{ $vehicles->links() }}
+    <div class="d-flex justify-content-center">
+        {{ $vehicles->links() }}
+    </div>
+</div>
 @endsection

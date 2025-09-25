@@ -8,32 +8,36 @@ class VehicleRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // ajustar se usar policies/auth
+        return true; // Permite que todos os usuários usem este request
     }
 
     public function rules()
     {
-        $vehicleId = $this->route('vehicle') ? $this->route('vehicle')->id : null;
-
         return [
-            'model' => 'required|string|max:255',
-            'plate' => [
-                'required',
-                'string',
-                'max:20',
-                'unique:vehicles,plate' . ($vehicleId ? ",{$vehicleId}" : ''),
-                // opcional: validar formato da placa com regex (Brasil Mercosul/antiga)
-            ],
-            'acquisition_date' => 'required|date',
-            'accessibility_type_id' => 'nullable|exists:accessibility_types,id',
+            'modelo' => 'required|string|max:255',
+
+            // Validação de placa
+            'placa' => $this->isMethod('post')
+                ? 'required|string|max:10|unique:vehicles,placa'
+                : 'required|string|max:10|unique:vehicles,placa,' . $this->vehicle->id,
+
+            'data_aquisicao' => 'required|date',
+
+            // Validação dos tipos de acessibilidade
+            'accessibility_types' => 'nullable|array',
+            'accessibility_types.*' => 'exists:accessibility_types,id',
         ];
     }
 
     public function messages()
     {
         return [
-            'plate.unique' => 'Já existe um veículo com essa placa.',
-            // outros msgs conforme necessário
+            'modelo.required' => 'O campo Modelo é obrigatório.',
+            'placa.required' => 'O campo Placa é obrigatório.',
+            'placa.unique' => 'Esta placa já está cadastrada.',
+            'data_aquisicao.required' => 'O campo Data de Aquisição é obrigatório.',
+            'accessibility_types.array' => 'Tipos de acessibilidade inválidos.',
+            'accessibility_types.*.exists' => 'Um ou mais tipos de acessibilidade selecionados não existem.',
         ];
     }
 }
